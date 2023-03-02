@@ -517,7 +517,7 @@ main {
 .service-title { margin-bottom: 20px; }
 
 .service-list {
-  display: grid;
+  /* display: grid; */
   grid-template-columns: 1fr;
   gap: 20px;
 }
@@ -565,7 +565,7 @@ main {
 .testimonials-title { margin-bottom: 20px; }
 
 .testimonials-list {
-  display: flex;
+  /* display: flex; */
   justify-content: flex-start;
   align-items: flex-start;
   gap: 15px;
@@ -1392,11 +1392,11 @@ textarea.form-input::-webkit-resizer { display: none; }
   /* service */
 
   .service-item {
-    display: flex;
+    /* display: flex; */
     justify-content: flex-start;
     align-items: flex-start;
     gap: 18px;
-    padding: 30px;
+    /* padding: 30px; */
   }
 
   .service-icon-box {
@@ -1819,7 +1819,93 @@ textarea.form-input::-webkit-resizer { display: none; }
 
 
 
-  /**
+  /**var selectedRow = null
+
+function onFormSubmit() {
+  if (validate()) {
+    var formData = readFormData();
+    if (selectedRow == null)
+      insertNewRecord(formData);
+    else
+      updateRecord(formData);
+    resetForm();
+  }
+}
+
+function readFormData() {
+  var formData = {};
+  formData["fullName"] = document.getElementById("fullName").value;
+  formData["empCode"] = document.getElementById("empCode").value;
+  formData["salary"] = document.getElementById("salary").value;
+  formData["city"] = document.getElementById("city").value;
+  return formData;
+}
+
+function insertNewRecord(data) {
+  var table = document.getElementById("employeeList").getElementsByTagName('tbody')[0];
+  var newRow = table.insertRow(table.length);
+  cell1 = newRow.insertCell(0);
+  cell1.innerHTML = data.fullName;
+  cell2 = newRow.insertCell(1);
+  cell2.innerHTML = data.empCode;
+  cell3 = newRow.insertCell(2);
+  cell3.innerHTML = data.salary;
+  cell4 = newRow.insertCell(3);
+  cell4.innerHTML = data.city;
+  cell4 = newRow.insertCell(4);
+  cell4.innerHTML = `<a onClick="onEdit(this)"  style="
+    background: yellowgreen;
+    padding: 12px 27px;
+">Edit</a>
+                       <a onClick="onDelete(this)"  style="
+                       background: red;
+                       padding: 12px 20px 12px 27px;
+                   ">Delete</a>`;
+}
+
+function resetForm() {
+  document.getElementById("fullName").value = "";
+  document.getElementById("empCode").value = "";
+  document.getElementById("salary").value = "";
+  document.getElementById("city").value = "";
+  selectedRow = null;
+}
+
+function onEdit(td) {
+  selectedRow = td.parentElement.parentElement;
+  document.getElementById("fullName").value = selectedRow.cells[0].innerHTML;
+  document.getElementById("empCode").value = selectedRow.cells[1].innerHTML;
+  document.getElementById("salary").value = selectedRow.cells[2].innerHTML;
+  document.getElementById("city").value = selectedRow.cells[3].innerHTML;
+}
+
+function updateRecord(formData) {
+  selectedRow.cells[0].innerHTML = formData.fullName;
+  selectedRow.cells[1].innerHTML = formData.empCode;
+  selectedRow.cells[2].innerHTML = formData.salary;
+  selectedRow.cells[3].innerHTML = formData.city;
+}
+
+function onDelete(td) {
+  if (confirm('Are you sure to delete this record ?')) {
+    row = td.parentElement.parentElement;
+    document.getElementById("employeeList").deleteRow(row.rowIndex);
+    resetForm();
+  }
+}
+
+function validate() {
+  isValid = true;
+  if (document.getElementById("fullName").value == "") {
+    isValid = false;
+    document.getElementById("fullNameValidationError").classList.remove("hide");
+  } else {
+    isValid = true;
+    if (!document.getElementById("fullNameValidationError").classList.contains("hide"))
+      document.getElementById("fullNameValidationError").classList.add("hide");
+  }
+  return isValid;
+}
    * SIDEBAR
    */
 
@@ -1879,4 +1965,112 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .timeline-text { max-width: 700px; }
 
+}
+
+
+
+/* CRUD OPERATION */
+body > table{
+    width: 80%;
+}
+
+table{
+    border-collapse: collapse;
+}
+table.list{
+    width:100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+td{
+  color:white;
+}
+
+td:last-child{
+  color: white;
+  display: grid;
+  /* justify-content: space-around; */
+  align-items: center;
+  padding: 0!important;
+  grid-auto-flow: column;
+  
+}
+
+td a:last-child{
+  padding: 12px 0px 12px 27px
+}
+thead{
+  background: #dddddd;
+}
+
+input[type=text], input[type=number] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: white;
+}
+
+input[type=submit]{
+    /* width: 30%; */
+    background-color: #00ff08;
+    color: #000;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    margin-top:30px;
+}
+
+form div.form-action-buttons{
+    text-align: right;
+}
+
+a{
+    cursor: pointer;
+    /* text-decoration: underline; */
+    /* color: #0000ee; */
+    /* margin-right: 4px; */
+}
+
+label.validation-error{
+    color:   red;
+    margin-left: 5px;
+}
+
+.hide{
+    display:none;
+}
+
+form{
+  display : flex ; 
+  align-items: center;
+  justify-content: space-between;
+}
+
+label {
+
+  color:white;
+}
+
+.forms{
+  display:flex;
+  align-items:center!important;
+  justify-content:space-around;
+}
+.forms div{
+  margin:10px
+}
+tbody tr td a {
+    padding: 12px 20px 12px 27px!important;
 }
